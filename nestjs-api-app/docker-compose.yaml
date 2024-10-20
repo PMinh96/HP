@@ -1,0 +1,68 @@
+# version: '3.8'
+# services:
+#   dev-database:
+#     image: postgres:15.0
+#     container_name: dev-database
+#     ports:
+#       - "5434:5432"
+#     environment:
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: Abc123456789
+#       POSTGRES_DB: testdb
+#     networks:
+#       - nestjs-networks
+#       #Create another container for"test"
+#   test-database:
+#     image: postgres:15.0
+#     container_name: test-database
+#     ports:
+#       - "5435:5432"
+#     environment:
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: Abc123456789
+#       POSTGRES_DB: testdb
+#     networks:
+#       - nestjs-networks
+
+# networks:
+#   nestjs-networks:
+
+# version: '3.8'
+# services:
+#   dev-database:
+#     image: mcr.microsoft.com/mssql/server:2022-latest
+#     container_name: dev-database
+#     restart: always
+#     ports:
+#       - "1434:1433"
+#     environment:
+#       SA_PASSWORD: Abc123456789@
+#       ACCEPT_EULA: Y
+#     networks:
+#       - mydatabases
+
+# networks:
+#   mydatabases:
+
+
+version: '3'
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: "mysql://mysql_username:mysql_password@mysql_host:3306/mysql_database"
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: mysql_database
+      MYSQL_USER: mysql_username
+      MYSQL_PASSWORD: mysql_password
+    ports:
+      - "3306:3306"
+
